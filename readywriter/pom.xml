@@ -142,4 +142,7 @@
 	<finalName>${project.artifactId}-${project.version}</finalName>
     </build>
 
+    <modules>
+	<module>readywriter-service</module>
+    </modules>
 </project>
