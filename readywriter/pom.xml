@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.zzzyxwvut</groupId>
+    <artifactId>readywriter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>A sink-writing service and its providers.</description>
+
+    <properties>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<maven.compiler.release>11</maven.compiler.release>
+
+	<maven.build.timestamp.format>
+	    yyyy-MM-dd'T'HH:mm:ss.SSSXX
+	</maven.build.timestamp.format>
+
+	<maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
+	<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+	<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+
+	<junit.jupiter.version>5.7.0</junit.jupiter.version>
+
+	<julics.version>1.0-SNAPSHOT</julics.version>
+    </properties>
+
+    <dependencyManagement>
+	<dependencies>
+	    <!--
+		julics-{core,naming,annotations} should be cloned and locally
+		installed from: https://bitbucket.org/zzzyxwvut/julics.git
+	    -->
+	    <dependency>
+		<groupId>org.zzzyxwvut</groupId>
+		<artifactId>julics-core</artifactId>
+		<version>${julics.version}</version>
+	    </dependency>
+
+	    <dependency>
+		<groupId>org.zzzyxwvut</groupId>
+		<artifactId>julics-naming</artifactId>
+		<version>${julics.version}</version>
+	    </dependency>
+
+	    <dependency>
+		<groupId>org.zzzyxwvut</groupId>
+		<artifactId>julics-annotations</artifactId>
+		<version>${julics.version}</version>
+		<optional>true</optional>
+	    </dependency>
+
+	    <dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter</artifactId>
+		<version>${junit.jupiter.version}</version>
+		<scope>test</scope>
+	    </dependency>
+
+	    <dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-api</artifactId>
+		<version>${junit.jupiter.version}</version>
+		<scope>test</scope>
+	    </dependency>
+
+	    <dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-engine</artifactId>
+		<version>${junit.jupiter.version}</version>
+		<scope>test</scope>
+	    </dependency>
+
+	    <dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-params</artifactId>
+		<version>${junit.jupiter.version}</version>
+		<scope>test</scope>
+	    </dependency>
+	</dependencies>
+    </dependencyManagement>
+
+    <build>
+	<pluginManagement>
+	    <plugins>
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-dependency-plugin</artifactId>
+		    <version>${maven-dependency-plugin.version}</version>
+		    <executions>
+			<execution>
+			    <goals>
+				<goal>properties</goal>
+			    </goals>
+			</execution>
+		    </executions>
+		</plugin>
+
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>${maven-compiler-plugin.version}</version>
+		    <configuration>
+			<compilerArgs>
+			    <arg>-g</arg>
+			    <arg>-Xlint:all,-cast,-exports,-processing</arg>
+			    <arg>-implicit:class</arg>
+			    <arg>-Xdoclint:all,-missing</arg>
+			    <arg>-Xdiags:verbose</arg>
+			    <!-- https://issues.apache.org/jira/browse/MCOMPILER-368 -->
+			    <arg>-Xpkginfo:always</arg>
+			    <arg>-XprintProcessorInfo</arg>
+			    <arg>-XprintRounds</arg>
+			    <arg>-Aorg.zzzyxwvut.loggable.build.time=${maven.build.timestamp}</arg>
+			    <arg>-Aorg.zzzyxwvut.loggable.concurrent=true</arg>
+			    <arg>--processor-module-path</arg>
+			    <!--
+				The ${groupId:artifactId:type} properties are
+				defined by the maven-dependency-plugin's properties
+				goal with values that point to the artifact file.
+			    -->
+			    <arg>${org.zzzyxwvut:julics-annotations:jar}${path.separator}${org.zzzyxwvut:julics-naming:jar}${path.separator}${org.zzzyxwvut:julics-core:jar}</arg>
+			</compilerArgs>
+			<showWarnings>true</showWarnings>
+			<forceJavacCompilerUse>false</forceJavacCompilerUse>
+			<useIncrementalCompilation>
+			    false
+			</useIncrementalCompilation>
+		    </configuration>
+		</plugin>
+
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-surefire-plugin</artifactId>
+		    <version>${maven-surefire-plugin.version}</version>
+		</plugin>
+	    </plugins>
+	</pluginManagement>
+
+	<finalName>${project.artifactId}-${project.version}</finalName>
+    </build>
+
+</project>
