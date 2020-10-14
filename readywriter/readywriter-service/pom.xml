@@ -49,6 +49,29 @@
 	    <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-compiler-plugin</artifactId>
+		<executions>
+		    <execution>
+			<id>default-testCompile</id>
+			<phase>test-compile</phase>
+			<goals>
+			    <goal>testCompile</goal>
+			</goals>
+			<configuration>
+			    <!--
+				TODO: Whenever this module test cases start
+				using @Loggable reconsider this overriding
+				configuration.
+			    -->
+			    <compilerArgs combine.self="override">
+				<arg>-g</arg>
+				<arg>-Xlint:all,-cast,-exports</arg>
+				<arg>-Xdoclint:all,-missing</arg>
+				<arg>-Xdiags:verbose</arg>
+				<arg>-Xpkginfo:always</arg>
+			    </compilerArgs>
+			</configuration>
+		    </execution>
+		</executions>
 	    </plugin>
 
 	    <plugin>
