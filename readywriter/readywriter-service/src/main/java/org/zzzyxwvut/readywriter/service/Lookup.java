@@ -21,6 +21,40 @@ import org.zzzyxwvut.readywriter.ReadyWriter;
 
 /**
  * A service loader for {@code ReadyWriter} providers.
+ * <p>
+ * Examples.
+ * <pre>
+ * Obtain a provider:
+ *
+ *	<code>Optional&lt;ReadyWriter&gt; writer0 = Lookup.readyWriter(null);</code>
+ *
+ * Obtain a provider of the specified kind:
+ *
+ *	<code>Optional&lt;ReadyWriter&gt; writer1 = Lookup.readyWriter(
+ *				new DefaultVisitor(Kind.PATH));</code>
+ *
+ * Obtain the specified provider:
+ *
+ *	<code>Optional&lt;ReadyWriter&gt; writer2 = Lookup.readyWriter(
+ *				"org.foo.AlphaProvider", null);</code>
+ *
+ * Obtain a provider and re-configure it:
+ *
+ *	<code>Optional&lt;ReadyWriter&gt; writer3 = Lookup.readyWriter(
+ *		new PathWriterVisitor(Path.of("/tmp/sink"), true));</code>
+ *
+ * Obtain the specified provider and re-configure it:
+ *
+ *	<code>Optional&lt;ReadyWriter&gt; writer4 = Lookup.readyWriter(
+ *				"org.foo.BetaProvider",
+ *		new PathWriterVisitor(Path.of("/tmp/sink"), true));</code>
+ *
+ * Attempt writing a message using the obtained provider, if any:
+ *
+ *	<code>Lookup.readyWriter(new DefaultVisitor(Kind.FILE_DESCRIPTOR))
+ *		.ifPresent(Lookup.messager()
+ *			.apply("hello world\n"));</code>
+ * </pre>
  */
 public interface Lookup
 {
