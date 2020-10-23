@@ -7,8 +7,8 @@ module org.zzzyxwvut.readywriter.service
 {
 	requires static org.zzzyxwvut.julics.annotations;
 
-	requires transitive org.zzzyxwvut.julics.core;
-	requires transitive org.zzzyxwvut.julics.naming;
+	requires org.zzzyxwvut.julics.core;
+	requires org.zzzyxwvut.julics.naming;
 
 	exports org.zzzyxwvut.readywriter.service;
 	exports org.zzzyxwvut.readywriter;
