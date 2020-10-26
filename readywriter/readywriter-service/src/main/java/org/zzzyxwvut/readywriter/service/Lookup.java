@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import org.zzzyxwvut.readywriter.ReadyWriter.Kind;
 import org.zzzyxwvut.readywriter.ReadyWriter.Visitor;
 import org.zzzyxwvut.readywriter.ReadyWriter;
+import org.zzzyxwvut.readywriter.annotation.Namable;
 
 /**
  * A service loader for {@code ReadyWriter} providers.
@@ -118,7 +119,7 @@ public interface Lookup
 	 * The found provider is reconfigured with the passed visitor, if any.
 	 *
 	 * @param <T> the type of a visitor
-	 * @param providerName the fully-qualified name of a provider
+	 * @param providerName the name of a provider
 	 * @param moduleLayer the module layer
 	 * @param visitor a visitor for a provider to reconfigure with, or
 	 *	{@code null}
@@ -161,7 +162,7 @@ public interface Lookup
 	 * The found provider is reconfigured with the passed visitor, if any.
 	 *
 	 * @param <T> the type of a visitor
-	 * @param providerName the fully-qualified name of a provider
+	 * @param providerName the name of a provider
 	 * @param visitor a visitor for a provider to reconfigure with, or
 	 *	{@code null}
 	 * @return an optional with the requested service provider, if found
@@ -175,14 +176,29 @@ public interface Lookup
 		return readyWriter(providerName, ModuleLayer.boot(), visitor);
 	}
 
+	private static Function<Class<? extends ReadyWriter>, Supplier<String>>
+								typeNamer()
+	{
+		return klass -> klass::getName;
+	}
+
+	private static Function<Provider<ReadyWriter>, String> namer()
+	{
+		return provider -> Optional.ofNullable(provider.type()
+				.getAnnotation(Namable.class))
+			.map(Namable::value)
+			.orElseGet(typeNamer()
+				.apply(provider.type()));
+	}
+
 	/**
-	 * Lists fully-qualified names of all found providers in the specified
-	 * module layer and its ancestors, without instantiating providers.
+	 * Lists names of all found providers in the specified module layer and
+	 * its ancestors, without instantiating providers.
 	 *
 	 * @param moduleLayer the module layer
-	 * @return the list of fully-qualified names of all found providers
-	 * @throws UnsupportedOperationException if any modification of the
-	 *	returned list is attempted
+	 * @return the list of names of all found providers
+	 * @throws UnsupportedOperationException if any modification of
+	 *	the returned list is attempted
 	 */
 	static List<String> names(ModuleLayer moduleLayer)
 	{
@@ -191,8 +207,7 @@ public interface Lookup
 						.<ModuleLayer>compose(layer ->
 				ServiceLoader.load(layer, ReadyWriter.class)
 					.stream()
-					.map(provider -> provider.type()
-								.getName())
+					.map(namer())
 					.peek(Lookup.<String>peeker())
 					.sorted(Comparator.naturalOrder())
 					.collect(Collectors.collectingAndThen(
@@ -203,12 +218,12 @@ public interface Lookup
 	}
 
 	/**
-	 * Lists fully-qualified names of all found providers in the boot
-	 * module layer, without instantiating providers.
+	 * Lists names of all found providers in the boot module layer, without
+	 * instantiating providers.
 	 *
-	 * @return the list of fully-qualified names of all found providers
-	 * @throws UnsupportedOperationException if any modification of the
-	 *	returned list is attempted
+	 * @return the list of names of all found providers
+	 * @throws UnsupportedOperationException if any modification of
+	 *	the returned list is attempted
 	 * @see #names(ModuleLayer)
 	 */
 	static List<String> names()	{ return names(ModuleLayer.boot()); }
@@ -252,8 +267,8 @@ public interface Lookup
 	private static Function<String, Predicate<Provider<ReadyWriter>>>
 								matcher()
 	{
-		return name -> provider -> name.equals(provider.type()
-								.getName());
+		return name -> provider -> name.equals(namer()
+							.apply(provider));
 	}
 
 	private static <T extends Visitor<? extends T>>
@@ -281,6 +296,7 @@ public interface Lookup
 	}
 
 	/** A delegating kind of {@code ReadyWriter}. */
+	@Namable("org.zzzyxwvut.readywriter.DefaultReadyWriter")
 	final class DefaultReadyWriter implements ReadyWriter
 	{
 		private final ReadyWriter writer;
@@ -300,12 +316,14 @@ public interface Lookup
 		@Override
 		public void write(String message)
 		{
+			Objects.requireNonNull(message, "message");
 			writer.write(message);
 		}
 
 		@Override
 		public void writeAndForce(String message)
 		{
+			Objects.requireNonNull(message, "message");
 			writer.writeAndForce(message);
 		}
 

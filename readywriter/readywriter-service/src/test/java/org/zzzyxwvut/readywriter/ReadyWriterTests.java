@@ -21,6 +21,7 @@ import org.junit.jupiter.api.function.Executable;
 
 import org.zzzyxwvut.readywriter.ReadyWriter.Kind;
 import org.zzzyxwvut.readywriter.ReadyWriter.Visitor;
+import org.zzzyxwvut.readywriter.annotation.Namable;
 import org.zzzyxwvut.readywriter.service.Lookup.DefaultReadyWriter;
 import org.zzzyxwvut.readywriter.service.Lookup.DefaultVisitor;
 import org.zzzyxwvut.readywriter.service.Lookup;
@@ -98,6 +99,7 @@ public class ReadyWriterTests
 		};
 	}
 
+	@Namable("org.zzzyxwvut.readywriter.CandidateWriter")
 	static final class CandidateWriter implements ReadyWriter
 	{
 		private final Object lock = new Object();
