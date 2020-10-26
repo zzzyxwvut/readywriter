@@ -225,6 +225,19 @@ public interface Lookup
 		return message -> writer -> writer.write(message);
 	}
 
+	/**
+	 * Returns a functional interface that takes a message and returns
+	 * a functional interface that takes a writer and, as a side effect,
+	 * writes the message, forcing any changes to the containing storage
+	 * device, and does not return a value.
+	 *
+	 * @return a curried function
+	 */
+	static Function<String, Consumer<ReadyWriter>> forcingMessager()
+	{
+		return message -> writer -> writer.writeAndForce(message);
+	}
+
 	private static <T> Function<T, Supplier<String>> stringer()
 	{
 		return element -> element::toString;
