@@ -10,6 +10,7 @@ module org.zzzyxwvut.readywriter.service
 	requires org.zzzyxwvut.julics.core;
 	requires org.zzzyxwvut.julics.naming;
 
+	exports org.zzzyxwvut.readywriter.annotation;
 	exports org.zzzyxwvut.readywriter.service;
 	exports org.zzzyxwvut.readywriter;
 
