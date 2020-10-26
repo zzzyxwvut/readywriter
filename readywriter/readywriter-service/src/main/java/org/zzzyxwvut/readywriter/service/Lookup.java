@@ -268,7 +268,7 @@ public interface Lookup
 	}
 
 	/** A delegating kind of {@code ReadyWriter}. */
-	static final class DefaultReadyWriter implements ReadyWriter
+	final class DefaultReadyWriter implements ReadyWriter
 	{
 		private final ReadyWriter writer;
 
@@ -312,7 +312,7 @@ public interface Lookup
 	}
 
 	/** A delegating kind of {@code Visitor}. */
-	static final class DefaultVisitor implements Visitor<DefaultVisitor>
+	final class DefaultVisitor implements Visitor<DefaultVisitor>
 	{
 		private final Function<ReadyWriter,
 					Optional<DefaultVisitor>> visitor;
