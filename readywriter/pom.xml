@@ -144,5 +144,6 @@
 
     <modules>
 	<module>readywriter-service</module>
+	<module>readywriter-fd</module>
     </modules>
 </project>
