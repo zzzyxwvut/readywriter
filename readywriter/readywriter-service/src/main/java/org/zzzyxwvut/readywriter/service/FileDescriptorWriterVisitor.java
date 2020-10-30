@@ -35,11 +35,12 @@ public final class FileDescriptorWriterVisitor implements
 	/**
 	 * Constructs a new {@code FileDescriptorWriterVisitor} object.
 	 *
-	 * @param fdNumber an open-file descriptor number, or the standard
+	 * @param fdNumber an inherited file descriptor number, or the standard
 	 *	output descriptor number, if less than 1
-	 * @param fileName a file name pattern that should match the name of
-	 *	an open file to which the passed file descriptor number is
-	 *	assigned
+	 * @param fileName a file name pattern against which either the name
+	 *	of an open file, to which the passed file descriptor number
+	 *	refers, or the file descriptor number itself, if the file is
+	 *	deleted, shall be matched
 	 * @param charset the character set of an open file
 	 * @param byteOrder the byte order of an open file
 	 */
@@ -59,7 +60,7 @@ public final class FileDescriptorWriterVisitor implements
 	 * set to use the contains-no-dots file name pattern and the UTF-8
 	 * character set and the big-endian byte order for an open file.
 	 *
-	 * @param fdNumber an open-file descriptor number, or the standard
+	 * @param fdNumber an inherited file descriptor number, or the standard
 	 *	output descriptor number, if less than 1
 	 */
 	public FileDescriptorWriterVisitor(int fdNumber)
@@ -76,8 +77,10 @@ public final class FileDescriptorWriterVisitor implements
 	public int fdNumber()		{ return fdNumber; }
 
 	/**
-	 * Returns a file name pattern that should match the name of an open
-	 * file to which this visitor's file-descriptor-number was assigned.
+	 * Returns a file name pattern against which either the name of an open
+	 * file, to which this visitor's file-descriptor number refers, or this
+	 * visitor's file-descriptor number itself, if the file is deleted,
+	 * shall be matched.
 	 *
 	 * @return a file name pattern
 	 */
