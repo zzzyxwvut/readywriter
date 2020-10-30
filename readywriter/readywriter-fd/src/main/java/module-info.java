@@ -1,5 +1,8 @@
 /**
  * Provides a file-descriptor-writing implementation of {@code ReadyWriter}.
+ *
+ * @provides org.zzzyxwvut.readywriter.ReadyWriter
+ * @see org.zzzyxwvut.readywriter.service.Lookup
  */
 module org.zzzyxwvut.readywriter.fd
 {
@@ -8,4 +11,7 @@ module org.zzzyxwvut.readywriter.fd
 	requires org.zzzyxwvut.julics.core;
 	requires org.zzzyxwvut.julics.naming;
 	requires org.zzzyxwvut.readywriter.service;
+
+	provides org.zzzyxwvut.readywriter.ReadyWriter with
+		org.zzzyxwvut.readywriter.fd.internal.FileDescriptorWriterProvider;
 }
