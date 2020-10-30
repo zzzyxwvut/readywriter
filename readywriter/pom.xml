@@ -25,6 +25,7 @@
 	<junit.jupiter.version>5.7.0</junit.jupiter.version>
 
 	<julics.version>1.0-SNAPSHOT</julics.version>
+	<impedimenta.version>1.0-SNAPSHOT</impedimenta.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +50,17 @@
 		<groupId>org.zzzyxwvut</groupId>
 		<artifactId>julics-annotations</artifactId>
 		<version>${julics.version}</version>
+		<optional>true</optional>
+	    </dependency>
+
+	    <!--
+		impedimenta should be cloned and locally installed from:
+		https://bitbucket.org/zzzyxwvut/impedimenta.git
+	    -->
+	    <dependency>
+		<groupId>org.zzzyxwvut</groupId>
+		<artifactId>impedimenta</artifactId>
+		<version>${impedimenta.version}</version>
 		<optional>true</optional>
 	    </dependency>
 

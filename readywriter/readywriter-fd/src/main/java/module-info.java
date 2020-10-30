@@ -6,6 +6,7 @@
  */
 module org.zzzyxwvut.readywriter.fd
 {
+	requires static org.zzzyxwvut.impedimenta;
 	requires static org.zzzyxwvut.julics.annotations;
 
 	requires org.zzzyxwvut.julics.core;

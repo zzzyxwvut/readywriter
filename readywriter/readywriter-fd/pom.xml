@@ -35,6 +35,11 @@
 	</dependency>
 
 	<dependency>
+	    <groupId>org.zzzyxwvut</groupId>
+	    <artifactId>impedimenta</artifactId>
+	</dependency>
+
+	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-api</artifactId>
 	</dependency>
