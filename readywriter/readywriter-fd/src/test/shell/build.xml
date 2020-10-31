@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="exec-shell-command" name="ant-test-helpers">
+    <property name="build.compiler.emacs" value="true" />
+
+    <fail message="An internal '-supported.platform' property defined.">
+	<condition>
+	    <isset property="-supported.platform" />
+	</condition>
+    </fail>
+
+    <target name="-check-os-platform">
+	<condition property="-supported.platform">
+	    <equals arg1="${os.name}" arg2="Linux" />
+	</condition>
+    </target>
+
+    <!-- See https://ant.apache.org/manual/install.html#advanced -->
+    <target depends="-check-os-platform" name="-check-ant-home"
+	    if="-supported.platform">
+	<fail message="Consider passing -Dant.home=${ANT_HOME}.">
+	    <condition>
+		<or>
+		    <not>
+			<isset property="ant.home" />
+		    </not>
+		    <equals arg1="${ant.home}" arg2="" />
+		</or>
+	    </condition>
+	</fail>
+    </target>
+
+    <target depends="-check-ant-home" name="exec-shell-command"
+	    if="-supported.platform">
+	<local name="exec.status" />
+	<exec dir="${basedir}/src/test/shell" os="Linux" failonerror="false"
+		executable="${exec.executable.name}" resolveexecutable="true"
+		resultproperty="exec.status" spawn="false"
+		timeout="${exec.timeout.millis}" vmlauncher="false" />
+    </target>
+</project>
