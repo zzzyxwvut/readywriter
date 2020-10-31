@@ -76,4 +76,113 @@
 	    </plugin>
 	</plugins>
     </build>
+
+    <profiles>
+	<profile>
+	    <properties>
+		<maven.antrun.skip>true</maven.antrun.skip>
+		<!--
+		    Given that JDK's service provider lookup mechanism depends
+		    on the system's ClassLoader and the useSystemClassLoader
+		    option expects a forkCount greater than 0, non-forked tests
+		    fail to load service providers.
+
+		    See https://maven.apache.org/surefire/maven-surefire-plugin/test-mojo.html#useSystemClassLoader
+		-->
+		<surefire.forkCount>0</surefire.forkCount>
+		<surefire.useSystemClassLoader>false</surefire.useSystemClassLoader>
+	    </properties>
+
+	    <!--
+		XXX: Do NOT run the surefire:test mojo directly with this
+		profile, the tests managed by it require pre/post set-up, use
+		either src/test/shell/fd_tests.sh or src/test/shell/tester.sh or
+		mvn -e -f readywriter-fd/pom.xml antrun:run@exec-shell-fd-tests \
+		    -Dant.home=${ANT_HOME:?} -Dmaven.antrun.skip=false
+	    -->
+	    <id>tester</id>
+	    <activation>
+		<os>
+		    <family>unix</family>
+		</os>
+		<property>
+		    <name>maven.antrun.skip</name>
+		    <value>false</value>
+		</property>
+		<file>
+		    <exists>${ant.home}/bin/ant</exists>
+		</file>
+	    </activation>
+
+	    <build>
+		<plugins>
+		    <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<executions>
+			    <execution>
+				<id>default-cli</id>
+				<configuration combine.self="override">
+				    <argLine> <!-- A redundant forkless root. -->
+					--add-modules org.zzzyxwvut.impedimenta
+				    </argLine>
+				    <forkCount>${surefire.forkCount}</forkCount>
+				    <useModulePath>true</useModulePath>
+				    <useSystemClassLoader>
+					${surefire.useSystemClassLoader}
+				    </useSystemClassLoader>
+				</configuration>
+			    </execution>
+			    <execution>
+				<id>default-test</id>
+				<phase>none</phase>
+				<goals>
+				    <goal>test</goal>
+				</goals>
+			    </execution>
+			</executions>
+		    </plugin>
+
+		    <!-- Drive it with src/test/shell/tester.sh -->
+		    <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>${maven-antrun-plugin.version}</version>
+			<configuration>
+			    <exportAntProperties>false</exportAntProperties>
+			    <failOnError>true</failOnError>
+			</configuration>
+			<executions>
+			    <execution>
+				<id>exec-shell-fd-tests</id>
+				<phase>test</phase>
+				<goals>
+				    <goal>run</goal>
+				</goals>
+				<configuration>
+				    <skip>${maven.antrun.skip}</skip>
+				    <target>
+					<property name="exec.executable.name"
+					    value="fd_tests.sh" />
+					<property name="exec.timeout.millis"
+					    value="30000" />
+					<ant antfile="${basedir}/src/test/shell/build.xml">
+					    <target name="exec-shell-command" />
+					</ant>
+				    </target>
+				</configuration>
+			    </execution>
+			</executions>
+			<dependencies>
+			    <dependency>
+				<groupId>org.apache.ant</groupId>
+				<artifactId>ant</artifactId>
+				<version>${ant.version}</version>
+			    </dependency>
+			</dependencies>
+		    </plugin>
+		</plugins>
+	    </build>
+	</profile>
+    </profiles>
 </project>
