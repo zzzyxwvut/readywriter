@@ -15,6 +15,9 @@ public interface ReadyWriter
 	/**
 	 * Writes a message to a sink, forcing any changes to the containing
 	 * storage device.
+	 * <p>
+	 * (Some storage devices, e.g. pipes, sockets, FIFOs, do not support
+	 * synchronisation.)
 	 *
 	 * @param message a message to write
 	 */
