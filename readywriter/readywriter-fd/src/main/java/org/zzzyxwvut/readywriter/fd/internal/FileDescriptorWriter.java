@@ -65,10 +65,13 @@ final class FileDescriptorWriter implements FileDescriptorWriterProvider
 		new FileOutputStream(FileDescriptor.out).getChannel();
 	private static final FileChannel ERR_CHANNEL =
 		new FileOutputStream(FileDescriptor.err).getChannel();
+	private static final Writer FORCER = (channel, buffer) -> {
+		channel.write(buffer);
+		channel.forceContent();
+	};	/* fsync(3): EINVAL for pipes, sockets, FIFOs. */
+	private static final Writer WRITER = ForcibleWritableByteChannel::write;
 	private static final BiFunction<Integer, Pattern,
 				ForcibleWritableByteChannel<?>> BINDER;
-	private static final Writer FORCER;
-	private static final Writer WRITER;
 
 	private final Object lock = new Object();
 	private final FileDescriptorWriterVisitor fdwVisitor;
@@ -87,13 +90,6 @@ final class FileDescriptorWriter implements FileDescriptorWriterProvider
 			: (fdNumber, fileName) -> (fdNumber > 1)
 				? new StandardFileChannel(ERR_CHANNEL)
 				: new StandardFileChannel(OUT_CHANNEL);
-		FORCER = (channel, buffer) -> {
-			channel.write(buffer);
-			channel.forceContent();
-		};	/* fsync(3): EINVAL for pipes, sockets, FIFOs. */
-		WRITER = (channel, buffer) -> {
-			channel.write(buffer);
-		};
 	}
 
 	/**
