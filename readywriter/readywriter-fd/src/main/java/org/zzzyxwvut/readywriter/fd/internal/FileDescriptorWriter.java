@@ -90,7 +90,7 @@ final class FileDescriptorWriter implements FileDescriptorWriterProvider
 		FORCER = (channel, buffer) -> {
 			channel.write(buffer);
 			channel.forceContent();
-		};
+		};	/* fsync(3): EINVAL for pipes, sockets, FIFOs. */
 		WRITER = (channel, buffer) -> {
 			channel.write(buffer);
 		};
@@ -388,6 +388,18 @@ final class FileDescriptorWriter implements FileDescriptorWriterProvider
 	{
 		StandardFileChannel(FileChannel channel) { super(channel); }
 
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @implSpec
+		 * Although this implementation is exclusively used with
+		 * <code>FileDescriptor.{out,err}</code>, no assumption is made
+		 * whether their storage devices support synchronisation.
+		 * <p>
+		 * E.g.<pre><code>
+		 *	JVM_PID=12345	# Consider using `jps -l`.
+		 *	sync --data /proc/${JVM_PID}/fd/1</code></pre>
+		 */
 		@Override
 		public void forceContent() throws IOException
 		{
