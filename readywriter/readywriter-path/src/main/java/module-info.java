@@ -13,4 +13,7 @@ module org.zzzyxwvut.readywriter.path
 //	requires org.zzzyxwvut.julics.core;
 //	requires org.zzzyxwvut.julics.naming;
 	requires org.zzzyxwvut.readywriter.service;
+
+	provides org.zzzyxwvut.readywriter.ReadyWriter with
+		org.zzzyxwvut.readywriter.path.internal.PathWriterProvider;
 }
