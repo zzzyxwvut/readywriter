@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>readywriter-demo</artifactId>
+
+    <parent>
+	<groupId>org.zzzyxwvut</groupId>
+	<artifactId>readywriter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+	<dependency>
+	    <groupId>${project.groupId}</groupId>
+	    <artifactId>readywriter-service</artifactId>
+	    <version>${project.version}</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>${project.groupId}</groupId>
+	    <artifactId>readywriter-path</artifactId>
+	    <version>${project.version}</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>${project.groupId}</groupId>
+	    <artifactId>readywriter-fd</artifactId>
+	    <version>${project.version}</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.zzzyxwvut</groupId>
+	    <artifactId>julics-core</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.zzzyxwvut</groupId>
+	    <artifactId>julics-naming</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.zzzyxwvut</groupId>
+	    <artifactId>julics-annotations</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-api</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-engine</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-params</artifactId>
+	</dependency>
+    </dependencies>
+
+    <build>
+	<plugins>
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-dependency-plugin</artifactId>
+	    </plugin>
+
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+	    </plugin>
+
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+	    </plugin>
+	</plugins>
+    </build>
+</project>
