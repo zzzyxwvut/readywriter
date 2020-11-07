@@ -160,5 +160,6 @@
 	<module>readywriter-service</module>
 	<module>readywriter-fd</module>
 	<module>readywriter-path</module>
+	<module>readywriter-demo</module>
     </modules>
 </project>
