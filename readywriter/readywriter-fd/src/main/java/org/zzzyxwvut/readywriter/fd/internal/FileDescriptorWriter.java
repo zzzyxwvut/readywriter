@@ -77,8 +77,8 @@ final class FileDescriptorWriter implements FileDescriptorWriterProvider
 	private final FileDescriptorWriterVisitor fdwVisitor;
 
 	static {
-		final boolean runByLinux = System.getProperty("os.name")
-						.equalsIgnoreCase("linux")
+		final boolean runByLinux = "linux".equalsIgnoreCase(
+						System.getProperty("os.name"))
 				&& Files.isExecutable(Path.of("/proc/self"));
 		BINDER = (runByLinux)
 			? (fdNumber, fileName) -> (fdNumber > 2)
