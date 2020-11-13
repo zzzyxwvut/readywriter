@@ -62,6 +62,31 @@
 	</dependency>
     </dependencies>
 
+    <properties>
+	<!--
+	    These are used by the maven-assembly-plugin with the shell.xml
+	    descriptor on its fileSets; also, see src/main/shell/demo.sh
+	-->
+	<readywriter-demo.modules.prefix>
+	    ${project.groupId}.${project.parent.artifactId}
+	</readywriter-demo.modules.prefix>
+	<readywriter-demo.modules.julics.core>
+	    ${project.groupId}.julics.core
+	</readywriter-demo.modules.julics.core>
+	<readywriter-demo.modules.julics.naming>
+	    ${project.groupId}.julics.naming
+	</readywriter-demo.modules.julics.naming>
+	<readywriter-demo.launcher.name>
+	    ${readywriter-demo.modules.prefix}.demo/${readywriter-demo.modules.prefix}.demo.DemoLauncher
+	</readywriter-demo.launcher.name>
+	<readywriter-demo.script.name>
+	    demo-runner-${project.version}
+	</readywriter-demo.script.name>
+	<readywriter-demo.script.version>
+	    ${project.version}
+	</readywriter-demo.script.version>
+    </properties>
+
     <build>
 	<plugins>
 	    <plugin>
@@ -93,6 +118,46 @@
 			</manifest>
 		    </archive>
 		</configuration>
+	    </plugin>
+
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-assembly-plugin</artifactId>
+		<version>${maven-assembly-plugin.version}</version>
+		<configuration>
+		    <descriptors>
+			<descriptor>src/assembly/shell.xml</descriptor>
+		    </descriptors>
+		    <finalName>${readywriter-demo.script.name}</finalName>
+		    <formats>
+			<format>tar.xz</format>
+		    </formats>
+		</configuration>
+		<executions>
+		    <execution>
+			<id>shell-scripts-assembly</id>
+			<phase>package</phase>
+			<goals>
+			    <goal>single</goal>
+			</goals>
+			<configuration>
+			    <!--
+				Fine as long as ${readywriter-demo.script.name}
+				and ${project.artifactId}-${project.version} do
+				not match.
+			    -->
+			    <appendAssemblyId>false</appendAssemblyId>
+			    <!--
+				Set of delimiters for expressions to filter
+				within the resources. See src/assembly/shell.xml
+			    -->
+			    <delimiters>
+				<delimiter>#{*}#</delimiter>
+			    </delimiters>
+			    <tarLongFileMode>fail</tarLongFileMode>
+			</configuration>
+		    </execution>
+		</executions>
 	    </plugin>
 	</plugins>
     </build>
