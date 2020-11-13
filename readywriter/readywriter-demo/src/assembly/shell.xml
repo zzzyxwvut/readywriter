@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <!--
+	See https://maven.apache.org/plugins/maven-assembly-plugin/assembly.html
+	See https://maven.apache.org/plugins/maven-assembly-plugin/advanced-descriptor-topics.html
+	See https://maven.apache.org/plugin-developers/cookbook/generate-assembly.html
+	See https://maven.apache.org/guides/mini/guide-assemblies.html
+    -->
+
+    <!--
+	Sets the id of this assembly. Also the id is used as the artifact's
+	classifier when deploying.
+    -->
+    <id>shell</id>
+
+    <formats>
+	<format>tar.xz</format>
+    </formats>
+
+    <!-- Includes a base (root) directory in the final archive. -->
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>${readywriter-demo.script.name}</baseDirectory>
+    <includeSiteDirectory>false</includeSiteDirectory>
+
+    <!--
+	Set of components which filter various container descriptors out of
+	the normal archive stream, so they can be aggregated then added.
+    <containerDescriptorHandlers>
+	<containerDescriptorHandler>
+	    <handlerName/>
+	    <configuration/>
+	</containerDescriptorHandler>
+    </containerDescriptorHandlers>
+    -->
+
+    <!--
+	The {includes,excludes} elements of moduleSet take a string of
+	the groupId:artifactId:type:classifier coordinates.
+    -->
+    <!--
+	(#3) Specifies which module files to include in the assembly.
+    <moduleSets>
+	<moduleSet>
+	    <useAllReactorProjects/>
+	    <includeSubModules/>
+	    <includes/>
+	    <excludes/>
+	    <sources>
+		<useDefaultExcludes/>
+		<outputDirectory/>
+		<includes/>
+		<excludes/>
+		<fileMode/>
+		<directoryMode/>
+		<fileSets>
+		    <fileSet>
+			<useDefaultExcludes/>
+			<outputDirectory/>
+			<includes/>
+			<excludes/>
+			<fileMode/>
+			<directoryMode/>
+			<directory/>
+			<lineEnding/>
+			<filtered/>
+		    </fileSet>
+		</fileSets>
+		<includeModuleDirectory/>
+		<excludeSubModuleDirectories/>
+		<outputDirectoryMapping/>
+	    </sources>
+	    <binaries>
+		<outputDirectory/>
+		<includes/>
+		<excludes/>
+		<fileMode/>
+		<directoryMode/>
+		<attachmentClassifier/>
+		<includeDependencies/>
+		<dependencySets>
+		    <dependencySet>
+			<outputDirectory/>
+			<includes/>
+			<excludes/>
+			<fileMode/>
+			<directoryMode/>
+			<useStrictFiltering/>
+			<outputFileNameMapping/>
+			<unpack/>
+			<unpackOptions>
+			    <includes/>
+			    <excludes/>
+			    <filtered/>
+			    <lineEnding/>
+			    <useDefaultExcludes/>
+			    <encoding/>
+			</unpackOptions>
+			<scope/>
+			<useProjectArtifact/>
+			<useProjectAttachments/>
+			<useTransitiveDependencies/>
+			<useTransitiveFiltering/>
+		    </dependencySet>
+		</dependencySets>
+		<unpack/>
+		<unpackOptions>
+		    <includes/>
+		    <excludes/>
+		    <filtered/>
+		    <lineEnding/>
+		    <useDefaultExcludes/>
+		    <encoding/>
+		</unpackOptions>
+		<outputFileNameMapping/>
+	    </binaries>
+	</moduleSet>
+    </moduleSets>
+    -->
+
+    <!--
+	(#2) Specifies which groups of files to include in the assembly.
+    -->
+    <fileSets>
+	<fileSet>
+	    <useDefaultExcludes>true</useDefaultExcludes>
+	    <!--
+		Sets the output directory relative to the root of the root
+		directory of the assembly.
+	    -->
+	    <outputDirectory>.</outputDirectory>
+	    <includes>
+		<include>*.*sh</include>
+	    </includes>
+	    <!--
+	    <excludes/>
+	    -->
+	    <fileMode>0750</fileMode>
+	    <directoryMode>0755</directoryMode>
+	    <directory>${project.basedir}/src/main/shell</directory>
+	    <lineEnding>keep</lineEnding>
+	    <!--
+		Whether to filter symbols in the files as they are copied,
+		using properties from the build configuration.
+		(Managed by <delimiters/> of the assembly:single goal.)
+	    -->
+	    <filtered>true</filtered>
+	</fileSet>
+    </fileSets>
+
+    <!--
+	(#1) Specifies which single files to include in the assembly.
+    <files>
+	<file>
+	    <source/>
+	    <outputDirectory/>
+	    <destName/>
+	    <fileMode/>
+	    <lineEnding/>
+	    <filtered/>
+	</file>
+    </files>
+    -->
+
+    <!--
+	The {includes,excludes} elements of dependencySet take a string of
+	the groupId:artifactId:type:classifier coordinates.
+    -->
+    <!--
+	(#4) Specifies which dependencies to include in the assembly.
+    -->
+    <dependencySets>
+	<dependencySet>
+	    <outputDirectory>lib</outputDirectory>
+	    <includes>
+		<include>org.zzzyxwvut:julics-core</include>
+		<include>org.zzzyxwvut:julics-naming</include>
+		<include>org.zzzyxwvut:readywriter-service</include>
+		<include>org.zzzyxwvut:readywriter-path</include>
+		<include>org.zzzyxwvut:readywriter-fd</include>
+		<include>org.zzzyxwvut:readywriter-demo</include>
+	    </includes>
+
+	    <!--
+	    <excludes/>
+	    <fileMode/>
+	    <directoryMode/>
+	    <useStrictFiltering/>
+	    <outputFileNameMapping/>
+	    <unpack/>
+	    <unpackOptions>
+		<includes/>
+		<excludes/>
+		<filtered/>
+		<lineEnding/>
+		<useDefaultExcludes/>
+		<encoding/>
+	    </unpackOptions>
+	    <useProjectAttachments/>
+	    <useTransitiveDependencies/>
+	    <useTransitiveFiltering/>
+	    -->
+	    <scope>runtime</scope>
+	    <useProjectArtifact>true</useProjectArtifact>
+	</dependencySet>
+    </dependencySets>
+
+    <!--
+	(#5) Specifies which repository files to include in the assembly.
+    <repositories>
+	<repository>
+	    <outputDirectory/>
+	    <includes/>
+	    <excludes/>
+	    <fileMode/>
+	    <directoryMode/>
+	    <includeMetadata/>
+	    <groupVersionAlignments>
+		<groupVersionAlignment>
+		    <id/>
+		    <version/>
+		    <excludes/>
+		</groupVersionAlignment>
+	    </groupVersionAlignments>
+	    <scope/>
+	</repository>
+    </repositories>
+    -->
+
+    <!--
+	Specifies the shared components xml file locations to include in
+	the assembly. The locations specified must be relative to the base
+	location of the descriptor: <descriptorRef/> elements are
+	classpath-bound, <descriptor/> elements are interpreted as a path
+	relative to the project basedir.
+    <componentDescriptors/>
+    -->
+</assembly>
