@@ -15,6 +15,12 @@
     <dependencies>
 	<dependency>
 	    <groupId>${project.groupId}</groupId>
+	    <artifactId>readywriter-common</artifactId>
+	    <version>${project.version}</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>${project.groupId}</groupId>
 	    <artifactId>readywriter-service</artifactId>
 	    <version>${project.version}</version>
 	</dependency>
@@ -55,6 +61,11 @@
 	    <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-dependency-plugin</artifactId>
+	    </plugin>
+
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-remote-resources-plugin</artifactId>
 	    </plugin>
 
 	    <plugin>

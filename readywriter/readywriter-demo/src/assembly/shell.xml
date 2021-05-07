@@ -137,7 +137,7 @@
 	    -->
 	    <fileMode>0750</fileMode>
 	    <directoryMode>0755</directoryMode>
-	    <directory>${project.basedir}/src/main/shell</directory>
+	    <directory>${basedir}/src/main/shell</directory>
 	    <lineEnding>keep</lineEnding>
 	    <!--
 		Whether to filter symbols in the files as they are copied,
@@ -150,17 +150,21 @@
 
     <!--
 	(#1) Specifies which single files to include in the assembly.
+    -->
     <files>
 	<file>
-	    <source/>
+	    <!--
 	    <outputDirectory/>
 	    <destName/>
 	    <fileMode/>
 	    <lineEnding/>
 	    <filtered/>
+	    -->
+	    <source>
+		${project.build.directory}/maven-shared-archive-resources/META-INF/LICENSE
+	    </source>
 	</file>
     </files>
-    -->
 
     <!--
 	The {includes,excludes} elements of dependencySet take a string of

@@ -15,6 +15,12 @@
     <dependencies>
 	<dependency>
 	    <groupId>${project.groupId}</groupId>
+	    <artifactId>readywriter-common</artifactId>
+	    <version>${project.version}</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>${project.groupId}</groupId>
 	    <artifactId>readywriter-service</artifactId>
 	    <version>${project.version}</version>
 	</dependency>
@@ -60,6 +66,11 @@
 	    <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-dependency-plugin</artifactId>
+	    </plugin>
+
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-remote-resources-plugin</artifactId>
 	    </plugin>
 
 	    <plugin>
@@ -122,6 +133,7 @@
 			<executions>
 			    <execution>
 				<id>default-cli</id>
+				<!-- https://issues.apache.org/jira/browse/MNG-5454 -->
 				<configuration combine.self="override">
 				    <argLine> <!-- A redundant forkless root. -->
 					--add-modules org.zzzyxwvut.impedimenta
